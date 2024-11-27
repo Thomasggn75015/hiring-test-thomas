@@ -36,7 +36,7 @@ describe("CarbonEmissionFactorsController", () => {
   });
 
   it("GET /carbon-emission-factors", async () => {
-    return request(app.getHttpServer())
+    return await request(app.getHttpServer())
       .get("/carbon-emission-factors")
       .expect(200)
       .expect(({ body }) => {

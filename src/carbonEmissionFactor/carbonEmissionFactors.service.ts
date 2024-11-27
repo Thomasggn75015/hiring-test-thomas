@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { CarbonEmissionFactor } from "./carbonEmissionFactor.entity";
 import { CreateCarbonEmissionFactorDto } from "./dto/create-carbonEmissionFactor.dto";
 
@@ -11,13 +11,22 @@ export class CarbonEmissionFactorsService {
     private carbonEmissionFactorRepository: Repository<CarbonEmissionFactor>
   ) {}
 
-  findAll(): Promise<CarbonEmissionFactor[]> {
-    return this.carbonEmissionFactorRepository.find();
+  async findAll(): Promise<CarbonEmissionFactor[]> {
+    return await this.carbonEmissionFactorRepository.find();
   }
 
-  save(
+  async findByNames(names: string[]): Promise<CarbonEmissionFactor[] | null> {
+    if (names.length === 0) return null;
+    return await this.carbonEmissionFactorRepository.find({
+      where: {
+        name: In(names),
+      },
+    });
+  }
+
+  async save(
     carbonEmissionFactor: CreateCarbonEmissionFactorDto[]
   ): Promise<CarbonEmissionFactor[] | null> {
-    return this.carbonEmissionFactorRepository.save(carbonEmissionFactor);
+    return await this.carbonEmissionFactorRepository.save(carbonEmissionFactor);
   }
 }

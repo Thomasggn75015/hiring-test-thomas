@@ -52,7 +52,6 @@ export class GreenlyDataSource {
       const tableNames = entities
         .map((entity) => `"${entity.tableName}"`)
         .join(", ");
-
       await dataSource.query(`TRUNCATE ${tableNames} CASCADE;`);
     } catch (error) {
       throw new Error(`ERROR: Cleaning test database: ${error}`);
